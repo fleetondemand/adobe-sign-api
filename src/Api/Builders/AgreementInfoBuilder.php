@@ -19,17 +19,29 @@ class AgreementInfoBuilder extends AbstractBuilder implements BuilderInterface
 
     protected $emailOption;
 
+    protected $formFieldLayerTemplates;
+
     public function __construct()
     {
         $this->fileInfos = new InfoCollection(
-            'AgreementInfoBuilder->fileInfos', FileInfoBuilder::class, $minRequiredElements = 1
+            'AgreementInfoBuilder->fileInfos',
+            FileInfoBuilder::class,
+            $minRequiredElements = 1
         );
 
         $this->participantSetsInfo = new InfoCollection(
-            'AgreementInfoBuilder->participantSetsInfo', ParticipantSetInfoBuilder::class, $minRequiredElements = 1
+            'AgreementInfoBuilder->participantSetsInfo',
+            ParticipantSetInfoBuilder::class,
+            $minRequiredElements = 1
         );
 
         $this->emailOption = new EmailOptionBuilder();
+
+        $this->formFieldLayerTemplates = new InfoCollection(
+            'AgreementInfoBuilder->fileInfos',
+            FileInfoBuilder::class,
+            $minRequiredElements = 1
+        );
     }
 
     public function setName(string $name)
@@ -94,6 +106,11 @@ class AgreementInfoBuilder extends AbstractBuilder implements BuilderInterface
         return $this->emailOption;
     }
 
+    public function formFieldLayerTemplates(): InfoCollection
+    {
+        return $this->formFieldLayerTemplates;
+    }
+
     public function validate()
     {
         $errors = [];
@@ -124,6 +141,7 @@ class AgreementInfoBuilder extends AbstractBuilder implements BuilderInterface
             'fileInfos' => $this->fileInfos->make(),
             'participantSetsInfo' => $this->participantSetsInfo->make(),
             'emailOption' => $this->emailOption->make(),
+            'formFieldLayerTemplates' => $this->formFieldLayerTemplates->make()
         ]);
     }
 }
