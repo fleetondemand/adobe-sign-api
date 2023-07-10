@@ -139,4 +139,24 @@ class Agreements extends AbstractApi
 
         return $this->_put('/agreements/' . $agreementId . '/state', [], $body, $headers) === [];
     }
+
+    /**
+     * Retrieves a single agreement.
+     *
+     * @param string $esignAgreementReference
+     * @return array|null
+     */
+    public function get(string $esignAgreementReference)
+    {
+        try {
+            return $this->_get('/agreements/' . $esignAgreementReference);
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            if ($e->getResponse()->getStatusCode() == 404) {
+                throw new CustomException("Resource not found", 404);
+            } else {
+                // If it's another error, rethrow the exception
+                throw $e;
+            }
+        }
+    }
 }
